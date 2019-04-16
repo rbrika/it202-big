@@ -109,20 +109,12 @@
   <!-- Call to Action -->
   <section class="content-section bg-primary text-white" id="search">
     <div class="container text-center">
-      <h2 class="mb-4">You can search for graffiti removal request by inserting a ward and status</h2>
+      <h2 class="mb-4">You can search for nearby resutrans and movies by using your current location. Click the button below to make the creach </h2>
         <form>
-          <div class="form-group">
-              <label>Ward</label>
-                <input class="form-control" id="ward" placeholder="Enter a Ward number">
-          </div>
-          <div class="form-group">
-              <label for="sel1">Status List:</label>
-              <select class="form-control" id="status">
-                  <option value="">Select a status</option>
-                  <option value="Open">Open</option>
-                  <option value="Completed">Completed</option>
-              </select>
-          </div>  
+<!--           <div class="form-group">
+              <label>Zip Code</label>
+                <input class="form-control" id="ward" placeholder="Enter a ZipCode">
+          </div>  -->
           <a href="#" class="btn btn-xl btn-dark" id="searchButton">Search</a>
         </form>
     </div>
@@ -141,6 +133,7 @@
   </section>
     <div id="cardList"class="card listTemplate col-lg-3 col-md-6 mb-5 mb-lg-0"  data-id="">
 		<div class="card-bodyList">
+            <img src="">
 			<h3 class="card-address mb-2 ">Card title</h3>
 			<h5 class="card-date mb-2 text-muted">Card date</h5>
             <h6 class="card-request mb-2 text-muted">Card date</h6>
@@ -187,75 +180,41 @@
       
 
     <script>
+        var lat;
+        var long;
         function initMap(){
             var chicago = {lat: 41.8781, lng: -87.6298};
             var map = new google.maps.Map(document.getElementById('map1'), {zoom: 12, center: chicago}); 
         };
+        var x = document.getElementById("demo");
       $(document).ready(function() {
+          
          
-var myurl = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=chicago";
-
-         $.ajax({
-            url: myurl,
-            headers: {
-             'Authorization':'Bearer TTYkJpHrHj85d1qlxcwk_jaReZ6aEe4Ou1FiFtNhRu1YWzkbobkP09yorRFfyx67zH63ncAO0_k_mNmDXge1buNdA2nYYf5QNeesYmYGK3YL83TK80jymWMqTbGwXHYx',
-         },
-            method: 'GET',
-            dataType: 'json',
-            success: function(data){
-                // Grab the results from the API JSON return
-                var totalresults = data.total;
-                console.log(totalresults)
-                // If our results are greater than 0, continue
-                if (totalresults > 0){
-                    // Display a header on the page with the number of results
-                    $('#header').append('<h5>We discovered ' + totalresults + ' results!</h5>');
-                    // Itirate through the JSON array of 'businesses' which was returned by the API
-                    $.each(data.businesses, function(i, item) {
-                        // Store each business's object in a variable
-                        var id = item.id;
-                        var alias = item.alias;
-                        var phone = item.display_phone;
-                        var image = item.image_url;
-                        var name = item.name;
-                        var rating = item.rating;
-                        var reviewcount = item.review_count;
-                        var address = item.location.address1;
-                        var city = item.location.city;
-                        var state = item.location.state;
-                        var zipcode = item.location.zip_code;
-                        // Append our result into our page
-                        $('#header').append('<div id="' + id + '" style="margin-top:50px;margin-bottom:50px;"><img src="' + image + '" style="width:200px;height:150px;"><br>We found <b>' + name + '</b> (' + alias + ')<br>Business ID: ' + id + '<br> Located at: ' + address + ' ' + city + ', ' + state + ' ' + zipcode + '<br>The phone number for this business is: ' + phone + '<br>This business has a rating of ' + rating + ' with ' + reviewcount + ' reviews.</div>');
-                  });
-                } else {
-                    // If our results are 0; no businesses were returned by the JSON therefor we display on the page no results were found
-                    $('#header').append('<h5>We discovered no results!</h5>');
-                }
-            }
-         
-         }); 
           $("#map1").css("display", "none");
              $("#search").css("display", "none");
              $("#list").css("display", "none");
           $("#about").css("display", "none");
-         var endpoint = "https://api.yelp.com/v3/businesses/search?";
-          
-          var db = new Dexie("graffiti_database");
+          var db = new Dexie("yelp_database");
           db.version(1).stores({
-              graffiti: '++id,address,date,request,location,statusDB,surface,dateComplete,lat,long'
+              yelp: '++id,name,address,city,state,zipcode,phone,rating,reviewcount,image,lat,long'
           });
-          db.graffiti.clear();
-            function loadCards(){
+          db.yelp.clear();
+          function loadCards(){
                 
-                db.graffiti.each(function(v){
+                db.yelp.each(function(v){
                     var clone = $(".listTemplate").clone();
-                     clone.find(".card-address").text(v.address);
-                     clone.find(".card-date").text("Date Created: "+v.date); 
-                     clone.find(".card-request").text("Service Request Number: "+v.request); 
-                     clone.find(".card-location").text("Where the Graffiti is located: "+v.location); 
-                     clone.find(".card-status").text("Status: "+v.statusDB); 
-                     clone.find(".card-surface").text("What type of surface?: "+v.surface); 
-                     clone.find(".card-dateComplete").text("Completion Date: "+v.dateComplete);
+                    var x = document.createElement("IMG");
+                      x.setAttribute("src", v.image);
+                      x.setAttribute("width", "200");
+                      x.setAttribute("height", "150");
+                     clone.append(x);
+                     clone.find(".card-address").text(v.name);
+                     clone.find(".card-date").text("Date Created: "+v.address); 
+                     clone.find(".card-request").text("Service Request Number: "+v.city); 
+                     clone.find(".card-location").text("Where the Graffiti is located: "+v.state); 
+                     clone.find(".card-status").text("Status: "+v.zipcode); 
+                     clone.find(".card-surface").text("What type of surface?: "+v.phone); 
+                     clone.find(".card-dateComplete").text("Completion Date: "+v.rating);
                      clone.attr("data-id",v.id);
                      clone.addClass(v.statusDB);
                      clone.removeClass("listTemplate");
@@ -266,38 +225,33 @@ var myurl = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/busines
           }
           function addMarkers(){
               var chicago = {lat: 41.8781, lng: -87.6298};
-            var map = new google.maps.Map(document.getElementById('map1'), {zoom: 12, center: chicago}); 
-              db.graffiti.each(function(v){
+              var map = new google.maps.Map(document.getElementById('map1'), {zoom: 12, center: chicago}); 
+              db.yelp.each(function(v){
+                  console.log(v.id+" added marker");
                   var infowindow = new google.maps.InfoWindow({
                          content:
                           '<div id="content">'+
                               '<div id="siteNotice">'+
                               '</div>'+
                                '<h1 id="firstHeading" class="firstHeading">' 
-                                +v.address+ 
+                                +v.name+ 
                                 '</h1>'+
                                 '<div id="bodyContent">'+
-                                '<b>Date Created: '+v.date+'<br>Completion Date:'+v.dateComplete+
-                                '</b><br><br><b>Where the Graffiti is located: '+v.location+'</b><br><br><b>What type of surface?: '+v.surface+'</b>'+
-                                '<br><br><b>Status: '+v.statusDB+'</b><br><br><b>Service Request Number: '+v.request+'</b>'+
+                                '<b>Date Created: '+v.address+'<br>Completion Date:'+v.city+
+                                '</b><br><br><b>Where the Graffiti is located: '+v.state+'</b><br><br><b>What type of surface?: '+v.zipcode+'</b>'+
+                                '<br><br><b>Status: '+v.phone+'</b><br><br><b>Service Request Number: '+v.rating+'</b>'+
                                 '</div>'+
                           '</div>'
                   });
                   
-                  var iconColor;
+                  var iconColor="restaurant.png"
                   var location = {lat: v.lat, lng: v.long};
-                  if(v.statusDB=="Open"){
-                         iconColor="grn-circle.png";
-                     }
-                     else{
-                         iconColor="red-circle.png";
-                     }
                   var marker = new google.maps.Marker({
                              position: location, 
                              map: map,
                              icon: iconColor
                   });
-                  console.log("added marker");
+                  
                   marker.set("id",v.id);
                   marker.addListener('click', function() {
                       var idM=marker.get("id");
@@ -323,7 +277,7 @@ var myurl = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/busines
              $("#about").css("display", "block");
          });
          $(".nav-main").on("click",function(){
-             db.graffiti.clear();
+             db.yelp.clear();
              $("#cardsList").empty();
              $("#map1").empty();
              document.getElementById("show").innerHTML = "Showing 0 results:";
@@ -341,46 +295,111 @@ var myurl = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/busines
              
          }
          $("#searchButton").on("click", function(){
-             db.graffiti.clear();
+             db.yelp.clear();
              $("#cardsList").empty();
              $("#map1").empty();  
-             var ward=$("#ward").val();
-             var status=$("#status").val();
-             var url=endpoint;
-             if(ward!=""){
-                 url=url+"&ward="+ward;
-             }
-             if(status!=""){
-                 url=url+"&status="+status;
-             }
-             console.log(url);
-             $.get(url,function(response){
-                 var data = response;
-                 document.getElementById("show").innerHTML = "Showing "+response.length+" results:";
-                 $.each(data, function(i,v){
-                     var completeDate;
-                     if(v.completion_date==null){
-                        completeDate="N/A"
-                        }
-                     else{
-                         completeDate=v.completion_date.split("T")[0];
-                     }
-                     db.graffiti.put({
-                         address:v.street_address,
-                         date:v.creation_date.split("T")[0],
-                         request:v.service_request_number,
-                         location:v.where_is_the_graffiti_located_,
-                         statusDB:v.status,
-                         surface:v.what_type_of_surface_is_the_graffiti_on_,
-                         dateComplete:completeDate,
-                         lat:parseFloat(v.latitude),
-                         long:parseFloat(v.longitude)
-                     });                     
-                 });  
-                 loadCards();
-                 addMarkers();
-             });
+             getLocation();
+             
          });
+          function getLocation() {
+              if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+              } else { 
+                console.log("Geolocation is not supported by this browser.");
+              }
+          }
+          function makeAjax(){
+              var myurl = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude="+lat+"&longitude="+long;
+         $.ajax({
+            url: myurl,
+            headers: {
+             'Authorization':'Bearer 8HMrAIZ_bA1azrlWFUB1J8WJ8z0EQEmro0Z3FZzsCyvzppZhxp8-px6_5XvK4Ttu05QOk0IxXEs8xlijmF7CV0CoGWbxAzJJ3jXIqcC9-fZHOyQzVl0hYr0cazG1XHYx',
+         },
+            method: 'GET',
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function(data){
+                console.log(data)
+                // Grab the results from the API JSON return
+                var totalresults = data.businesses.length;
+                console.log(totalresults)
+                // If our results are greater than 0, continue
+                if (totalresults > 0){
+                    // Display a header on the page with the number of results
+                    $('#header').append('<h5>We discovered ' + totalresults + ' results!</h5>');
+                    // Itirate through the JSON array of 'businesses' which was returned by the API
+                    $.each(data.businesses, function(i, item) {
+                        // Store each business's object in a variable
+                        db.yelp.put({
+                             name:item.name,
+                             address:item.location.address1,
+                             city:item.location.city,
+                             state:item.location.state,
+                             zipcode:item.location.zip_code,
+                             phone:item.display_phone,
+                             rating:item.rating,
+                             reviewcount:item.review_count,
+                             image:item.image_url,
+                             lat:item.coordinates.latitude,
+                             long:item.coordinates.longitude
+                         });
+                  });
+                    loadCards();
+                    addMarkers();
+                } else {
+                    // If our results are 0; no businesses were returned by the JSON therefor we display on the page no results were found
+                    $('#header').append('<h5>We discovered no results!</h5>');
+                }
+            }
+         }); 
+              var url='https://data.tmsapi.com/v1.1/theatres?zip=60634&api_key=cd62umkja4byk4g4y2j5cbsa';
+              var url2='https://data.tmsapi.com/v1.1/movies/showings?startDate=2019-04-16&lat='+lat+'&lng='+long+'&api_key=cd62umkja4byk4g4y2j5cbsa';
+                       $.ajax({
+            url: url2,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data){
+                console.log(data)
+                //Grab the results from the API JSON return
+//                 var totalresults = data.businesses.length;
+//                 console.log(totalresults)
+//                 // If our results are greater than 0, continue
+//                 if (totalresults > 0){
+//                     // Display a header on the page with the number of results
+//                     $('#header').append('<h5>We discovered ' + totalresults + ' results!</h5>');
+//                     // Itirate through the JSON array of 'businesses' which was returned by the API
+//                     $.each(data.businesses, function(i, item) {
+//                         // Store each business's object in a variable
+//                         db.movie.put({
+//                              name:item.name,
+//                              address:item.location.address1,
+//                              city:item.location.city,
+//                              state:item.location.state,
+//                              zipcode:item.location.zip_code,
+//                              phone:item.display_phone,
+//                              rating:item.rating,
+//                              reviewcount:item.review_count,
+//                              image:item.image_url,
+//                              lat:item.coordinates.latitude,
+//                              long:item.coordinates.longitude
+//                          });
+//                   });
+//                     loadMovieCards();
+//                     addMovieMarkers();
+//                 } else {
+//                     // If our results are 0; no businesses were returned by the JSON therefor we display on the page no results were found
+//                     $('#header').append('<h5>We discovered no results!</h5>');
+//                 }
+            }
+         }); 
+    }
+        function showPosition(position) {
+            lat=position.coords.latitude;
+            long=position.coords.longitude;
+            console.log("Latitude: " + position.coords.latitude + 
+              "<br>Longitude: " + position.coords.longitude);
+            makeAjax();
+        }
       });
         // register the service worker for offline use
         if('serviceWorker' in navigator) {
