@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+        <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>  
+        <style>
+            .demo-card{
+                display:none;
+            } 
+        </style>
+    </head>
+    <body>
+        <div class="mdc-tab-bar" role="tablist" data-mdc-auto-init="MDCTabBar">
+          <div class="mdc-tab-scroller">
+            <div class="mdc-tab-scroller__scroll-area">
+              <div class="mdc-tab-scroller__scroll-content">
+                <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0" id="searchTab">
+                  <span class="mdc-tab__content">
+                    <span class="mdc-tab__icon material-icons" aria-hidden="true">search</span>
+                    <span class="mdc-tab__text-label">Search</span>
+                  </span>
+                  <span class="mdc-tab-indicator mdc-tab-indicator--active">
+                    <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                  </span>
+                  <span class="mdc-tab__ripple"></span>
+                </button>
+                <button class="mdc-tab " role="tab" aria-selected="false" tabindex="1" id="foodTab">
+                  <span class="mdc-tab__content">
+                    <span class="mdc-tab__icon material-icons" aria-hidden="true">local_dining</span>
+                    <span class="mdc-tab__text-label">Resturants</span>
+                  </span>
+                  <span class="mdc-tab-indicator ">
+                    <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                  </span>
+                  <span class="mdc-tab__ripple"></span>
+                </button>
+                <button class="mdc-tab " role="tab" aria-selected="false" tabindex="2" id="movieTab">
+                  <span class="mdc-tab__content">
+                    <span class="mdc-tab__icon material-icons" aria-hidden="true">local_movies</span>
+                    <span class="mdc-tab__text-label">Movies</span>
+                  </span>
+                  <span class="mdc-tab-indicator ">
+                    <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                  </span>
+                  <span class="mdc-tab__ripple"></span>
+                </button>
+                <button class="mdc-tab " role="tab" aria-selected="false" tabindex="3" id="mapsTab">
+                  <span class="mdc-tab__content">
+                    <span class="mdc-tab__icon material-icons" aria-hidden="true">map</span>
+                    <span class="mdc-tab__text-label">Map</span>
+                  </span>
+                  <span class="mdc-tab-indicator ">
+                    <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                  </span>
+                  <span class="mdc-tab__ripple"></span>
+                </button>
+                <button class="mdc-tab " role="tab" aria-selected="false" tabindex="4" id="favsTab">
+                  <span class="mdc-tab__content">
+                    <span class="mdc-tab__icon material-icons" aria-hidden="true">favorite</span>
+                    <span class="mdc-tab__text-label">Favorites</span>
+                  </span>
+                  <span class="mdc-tab-indicator ">
+                    <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                  </span>
+                  <span class="mdc-tab__ripple"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+          <!-- Call to Action -->
+          <section id="search">
+            <div class="container text-center">
+              <h2 class="mb-4">You can search for nearby resutrans and movies by using your current location. Click the button below to make the creach </h2>
+                <form>
+                  <button id="searchButton"class="mdc-button mdc-button--outlined" type="button">Search</button>
+                </form>
+            </div>
+          </section>
+        <div class="row" id="cardsList">
+      </div>
+        <!-- Card Template -->
+        <div class="mdc-card demo-card demo-basic-with-header listTemplate col-lg-3 col-md-6 mb-5 mb-lg-0">
+          <div class="demo-card__primary">
+            <h2 class="demo-card__title mdc-typography mdc-typography--headline6">Retaurant Name</h2>
+            <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2">Address</h3>
+          </div>
+          <div class="mdc-card__primary-action demo-card__primary-action" tabindex="0">
+            <div class="mdc-card__media mdc-card__media--16-9 demo-card__media" style="background-image: url(&quot;https://material-components.github.io/material-components-web-catalog/static/media/photos/3x2/2.jpg&quot;);"></div>
+            <div class="demo-card__secondary mdc-typography mdc-typography--body2">Visit ten places on our planet that are undergoing the biggest changes today.</div>
+          </div>
+          <div class="mdc-card__actions">
+            <div class="mdc-card__action-buttons">
+              <button class="mdc-button mdc-card__action mdc-card__action--button">Read</button>
+            </div>
+            <div class="mdc-card__action-icons">
+              <button class="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded" aria-pressed="false" aria-label="Add to favorites" title="Add to favorites">
+                <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
+                <i class="material-icons mdc-icon-button__icon">favorite_border</i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Map -->
+  <section id="map1" class="map"></section>
+        <script src="https://unpkg.com/material-components-web@1.0.0/dist/material-components-web.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+            var lat;
+            var long;
+            function initMap(){
+            var chicago = {lat: 41.8781, lng: -87.6298};
+            var map = new google.maps.Map(document.getElementById('map1'), {zoom: 12, center: chicago}); 
+        };
+            var yelpKey='8HMrAIZ_bA1azrlWFUB1J8WJ8z0EQEmro0Z3FZzsCyvzppZhxp8-px6_5XvK4Ttu05QOk0IxXEs8xlijmF7CV0CoGWbxAzJJ3jXIqcC9-fZHOyQzVl0hYr0cazG1XHYx';
+            $(document).ready(function () { 
+                var db = new Dexie("yelp_database");
+                db.version(1).stores({
+                    yelp: '++id,name,address,city,state,zipcode,phone,rating,reviewcount,image,lat,long',
+                    movie:'++id,title,releaseDate,longDescription',
+                    showtime:'++id,title,theatre,dateTime',
+                    theatres:'theatre'
+                });
+                var searchButton=mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-button'));
+                window.mdc.autoInit();
+                const tabBar = document.querySelector('.mdc-tab-bar').MDCTabBar;
+                console.log(tabBar);
+                $('#searchTab').click(function() {
+                    console.log("search Clicked");
+                });
+                $('#foodTab').click(function() {
+                    console.log("food Clicked");
+                });
+                $('#movieTab').click(function() {
+                    console.log("movie Clicked");
+                });
+                $('#mapTab').click(function() {
+                    console.log("map Clicked");
+                });
+                $('#favsTab').click(function() {
+                    console.log("favs Clicked");
+                });
+                $('#searchButton').click(function(){
+                   console.log("Searching"); 
+                    getLocation();
+                });
+                function loadCards(){
+                
+                    db.yelp.each(function(v){
+                        var clone = $(".demo-card").clone();
+                        clone.find(".demo-card__media").css("background-image","url('"+v.image+"')");
+                        clone.find(".mdc-typography--headline6").text(v.name);
+                        clone.find(".mdc-typography--subtitle2").text(v.address+","+v.city+","+v.state+","+v.zipcode);
+                        clone.find(".mdc-typography--body2").text(v.phone+"   "+v.rating);
+                        clone.attr("data-id",v.id);
+                        clone.removeClass("demo-card");
+                        $("#cardsList").append(clone);
+                    });
+                                   
+                }
+                function getLocation() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(showPosition);
+                    }else { 
+                        console.log("Geolocation is not supported by this browser.");
+                    }
+                }
+                function makeAjax(){
+                    var myurl = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude="+lat+"&longitude="+long;
+                    $.ajax({
+                        url: myurl,
+                        headers: {
+                        'Authorization':'Bearer '+yelpKey,
+                     },
+                      method: 'GET',
+                      contentType: "application/json; charset=utf-8",
+                      dataType: 'json',
+                      success: function(data){
+                          // Grab the results from the API JSON return
+                          var totalresults = data.businesses.length;
+                          // If our results are greater than 0, continue
+                          if (totalresults > 0){
+                          // Display a header on the page with the number of results
+                          // Itirate through the JSON array of 'businesses' which was returned by the API
+                              $.each(data.businesses, function(i, item) {
+                                // Store each business's object in a variable
+                                  db.yelp.put({
+                                      name:item.name,
+                                      address:item.location.address1,
+                                      city:item.location.city,
+                                      state:item.location.state,
+                                      zipcode:item.location.zip_code,
+                                      phone:item.display_phone,
+                                      rating:item.rating,
+                                      reviewcount:item.review_count,
+                                      image:item.image_url,
+                                      lat:item.coordinates.latitude,
+                                      long:item.coordinates.longitude
+                                  });
+                              });
+                              loadCards();
+                              //addMarkers();
+                          } else {
+                              // If our results are 0; no businesses were returned by the JSON therefor we display on the page no results were found
+                          }
+                      }
+                   }); 
+              var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+            
+              var url2='https://data.tmsapi.com/v1.1/movies/showings?startDate='+today+'&lat='+lat+'&lng='+long+'&api_key=cd62umkja4byk4g4y2j5cbsa';
+                       $.ajax({
+            url: url2,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data){
+                
+                //Grab the results from the API JSON return
+                var totalresults = data.length;
+                
+                // If our results are greater than 0, continue
+                if (totalresults > 0){
+                    // Display a header on the page with the number of results
+                    $('#header').append('<h5>We discovered ' + totalresults + ' results!</h5>');
+                    // Itirate through the JSON array of 'businesses' which was returned by the API
+                    $.each(data, function(i, item) {
+                        // Store each business's object in a variable
+                        db.movie.put({
+                             title:item.title,
+                             releaseDate:item.releaseDate,
+                             longDescription:item.longDescription
+                         });
+                            $.each(item.showtimes,function(i,v){
+                                   
+                                db.showtime.put({
+                                   name:item.title,
+                                   theatre:v.theatre.name,
+                                   dateTime:v.dateTime
+                               });
+                                db.theatres.put({theatre:v.theatre.name});
+
+                            });
+                  });
+                     //addMarkers();
+                } else {
+                    // If our results are 0; no businesses were returned by the JSON therefor we display on the page no results were found
+                    $('#header').append('<h5>We discovered no results!</h5>');
+                }
+            }
+         }); 
+    }
+          function showPosition(position) {
+            lat=position.coords.latitude;
+            long=position.coords.longitude;
+            console.log("Latitude: " + position.coords.latitude + 
+              "<br>Longitude: " + position.coords.longitude);
+            makeAjax();
+        }
+            });
+            // register the service worker for offline use
+        if('serviceWorker' in navigator) {
+          navigator.serviceWorker
+                   .register('./sw.js')
+                   .then(function() { 
+                          console.log("Service Worker Registered");   
+                   });
+        }
+        </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCdVEsFVj2iW8PweCj3hm8BkBRlz2qbTgM&callback=initMap"></script>
+    </body>
+</html>

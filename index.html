@@ -275,7 +275,7 @@
                   var marker = new google.maps.Marker({
                              position: location, 
                              map: map,
-                             icon: iconColor
+                             icon: "blue-dot.png"
                   });
                   
                   marker.set("id",v.id);
@@ -285,21 +285,17 @@
                       infowindow.open(map, marker);
                   });
               });
+              var id=0;
               db.theatres.each(function(v){
-                  console.log(v.id+" Movie added marker");
+                  console.log(id+" Movie added marker");
                   var infowindow = new google.maps.InfoWindow({
                          content:
                           '<div id="content">'+
                               '<div id="siteNotice">'+
                               '</div>'+
                                '<h1 id="firstHeading" class="firstHeading">' 
-                                +v.name+ 
+                                +v.theatre+ 
                                 '</h1>'+
-                                '<div id="bodyContent">'+
-                                '<b>Date Created: '+v.address+'<br>Completion Date:'+v.city+
-                                '</b><br><br><b>Where the Graffiti is located: '+v.state+'</b><br><br><b>What type of                                     surface?: '+v.zipcode+'</b>'+
-                                '<br><br><b>Status: '+v.phone+'</b><br><br><b>Service Request Number:                                                     '+v.rating+'</b>'+
-                                '</div>'+
                           '</div>'
                   });
                   var geocoder = new google.maps.Geocoder();
@@ -308,15 +304,22 @@
                    }, 
                    function(results, status) {
                       if(status == google.maps.GeocoderStatus.OK) {
-                         new google.maps.Marker({
+                         var marker=new google.maps.Marker({
                             position: results[0].geometry.location,
                             map: map
-                      });
+                          });
+                          marker.set("id",id);
+                          marker.addListener('click', function() {
+                              var idM=marker.get("id");
+                              console.log("clicked on marker "+idM);
+                              infowindow.open(map, marker);
+                          });
                       }
                        else{
-                           console.log("Cant add marker");
+                           console.log("Cant add marker for "+v.theatre);
                        }
                    });
+                  id++;
               });
           }
           function loadMovieCards(){
@@ -457,8 +460,14 @@
                 }
             }
          }); 
-              var url='https://data.tmsapi.com/v1.1/theatres?zip=60634&api_key=cd62umkja4byk4g4y2j5cbsa';
-              var url2='https://data.tmsapi.com/v1.1/movies/showings?startDate=2019-04-16&lat='+lat+'&lng='+long+'&api_key=cd62umkja4byk4g4y2j5cbsa';
+              var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+            
+              var url2='https://data.tmsapi.com/v1.1/movies/showings?startDate='+today+'&lat='+lat+'&lng='+long+'&api_key=cd62umkja4byk4g4y2j5cbsa';
                        $.ajax({
             url: url2,
             method: 'GET',
