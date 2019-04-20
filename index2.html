@@ -13,6 +13,13 @@
             .demo-card{
                 display:none;
             } 
+/*             .mdc-card {
+  padding: 16px;
+} */
+/*             .mdc-card {
+  height: 350px;
+  width: 350px;
+} */
         </style>
     </head>
     <body>
@@ -83,10 +90,30 @@
                 </form>
             </div>
           </section>
-        <div class="row" id="cardsList">
+          <!-- List -->
+        <section class="content-section bg-primary text-white text-center" id="list">
+    <div class="container">
+      <div class="content-section-heading">
+        <h3 class="text-secondary mb-0" style="font-size:50px;">List</h3>
+        <p id="show" class="mb-5" style="font-size:42px;"></p>
       </div>
+        <div class="mdc-layout-grid mdc-layout-grid--align-left demo-grid demo-grid--alignment">
+            <div id="cardsList" class="mdc-layout-grid__inner">
+<!--                 <div class="mdc-layout-grid__cell demo-cell"></div>
+                <div class="mdc-layout-grid__cell demo-cell"></div>
+                <div class="mdc-layout-grid__cell demo-cell"></div> -->
+            </div>
+        </div>
+<!--       <div class="mdc-layout-grid demo-grid">
+          <div id="cardsList" class="mdc-layout-grid__inner">
+          </div>
+        </div> -->
+    </div>
+  </section>
+        
+        
         <!-- Card Template -->
-        <div class="mdc-card demo-card demo-basic-with-header listTemplate col-lg-3 col-md-6 mb-5 mb-lg-0">
+        <div class="mdc-card demo-card demo-basic-with-header mdc-layout-grid__cell mdc-layout-grid__cell demo-cell" data-id="">
           <div class="demo-card__primary">
             <h2 class="demo-card__title mdc-typography mdc-typography--headline6">Retaurant Name</h2>
             <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2">Address</h3>
