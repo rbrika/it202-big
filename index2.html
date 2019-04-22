@@ -10,16 +10,16 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>  
         <style>
-            .demo-card{
+            #map1 {
+        height: 100%;
+                width:100%;
+      }
+            .listTemp{
                 display:none;
-            } 
-/*             .mdc-card {
-  padding: 16px;
-} */
-/*             .mdc-card {
-  height: 350px;
-  width: 350px;
-} */
+            }
+            .showtime-Temp{
+                display:none;
+            }
         </style>
     </head>
     <body>
@@ -94,7 +94,7 @@
         <section class="content-section bg-primary text-white text-center" id="list">
     <div class="container">
       <div class="content-section-heading">
-        <h3 class="text-secondary mb-0" style="font-size:50px;">List</h3>
+        <h3 class="text-secondary mb-0" style="font-size:50px;">RESTURANTS</h3>
         <p id="show" class="mb-5" style="font-size:42px;"></p>
       </div>
         <div class="mdc-layout-grid mdc-layout-grid--align-left demo-grid demo-grid--alignment">
@@ -104,11 +104,11 @@
     </div>
   </section>
         
-                  <!-- MOVIE -->
+          <!-- MOVIE -->
         <section class="content-section bg-primary text-white text-center" id="movies">
     <div class="container">
       <div class="content-section-heading">
-        <h3 class="text-secondary mb-0" style="font-size:50px;">List</h3>
+        <h3 class="text-secondary mb-0" style="font-size:50px;">MOVIES</h3>
         <p id="show" class="mb-5" style="font-size:42px;"></p>
       </div>
         <div class="mdc-layout-grid mdc-layout-grid--align-left demo-grid demo-grid--alignment">
@@ -118,9 +118,22 @@
     </div>
   </section>
         
+        <!--SHOWTIMES-->
+        <section class="content-section bg-primary text-white text-center" id="showtimes">
+    <div class="container">
+      <div class="showTimes content-section-heading">
+        <h3 id="headerShowtime"class="text-secondary mb-0" style="font-size:50px;">SHOWTIMES FOR:</h3>
+        <p id="show" class="mb-5" style="font-size:42px;"></p>
+      </div>
+        <div class="mdc-layout-grid mdc-layout-grid--align-left demo-grid demo-grid--alignment">
+            <div id="showTimeForMovie" class="mdc-layout-grid__inner">
+            </div>
+        </div>
+    </div>
+  </section>
         
         <!-- Card Template -->
-        <div id= "" class="mdc-card demo-card demo-basic-with-header mdc-layout-grid__cell demo-cell" data-id="">
+        <div id= "" class="listTemp mdc-card demo-card demo-basic-with-header mdc-layout-grid__cell demo-cell" data-id="">
           <div class="demo-card__primary">
             <h2 class="demo-card__title mdc-typography mdc-typography--headline6">Retaurant Name</h2>
             <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2">Address</h3>
@@ -130,22 +143,31 @@
             <div class="demo-card__secondary mdc-typography mdc-typography--body2">Visit ten places on our planet that are undergoing the biggest changes today.</div>
           </div>
         </div>
+        
+        <!-- SHOWTIME Template -->
+        <div id= "" class="showtime-Temp mdc-card demo-card demo-basic-with-header mdc-layout-grid__cell demo-cell" data-id="">
+          <div class="demo-card__primary">
+            <h2 class="demo-card__title mdc-typography mdc-typography--headline6">Retaurant Name</h2>
+            <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2">Address</h3>
+          </div>
+        </div>
         <!-- Map -->
-  <section id="map1" class="map"></section>
+        <div id="map1" style="height:500px;"></div>
         <script src="https://unpkg.com/material-components-web@1.0.0/dist/material-components-web.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script>
             var lat;
             var long;
             function initMap(){
-            var chicago = {lat: 41.8781, lng: -87.6298};
-            var map = new google.maps.Map(document.getElementById('map1'), {zoom: 12, center: chicago}); 
-        };
+                var chicago = {lat: 41.8781, lng: -87.6298};
+                var map = new google.maps.Map(document.getElementById('map1'), {zoom: 12, center: chicago}); 
+            };
             var yelpKey='8HMrAIZ_bA1azrlWFUB1J8WJ8z0EQEmro0Z3FZzsCyvzppZhxp8-px6_5XvK4Ttu05QOk0IxXEs8xlijmF7CV0CoGWbxAzJJ3jXIqcC9-fZHOyQzVl0hYr0cazG1XHYx';
             $("#map1").css("display",  "none");
             $("#list").css("display",  "none");
             $("#movies").css("display", "none");
             $("#about").css("display", "none");
+            $("#showtimes").css("display", "none");
             $(document).ready(function () { 
                 var db = new Dexie("yelp_database");
                 db.version(1).stores({
@@ -160,6 +182,7 @@
                 
                 $('#searchTab').click(function() {
                     console.log("search Clicked");
+                    $("#map1").empty();
                     hideScreens();
                     $("#search").css("display", "block");
                 });
@@ -173,7 +196,7 @@
                     hideScreens();
                     $("#movies").css("display", "block");
                 });
-                $('#mapTab').click(function() {
+                $('#mapsTab').click(function() {
                     console.log("map Clicked");
                     hideScreens();
                     $("#map1").css("display", "block");
@@ -181,29 +204,103 @@
                 $('#favsTab').click(function() {
                     console.log("favs Clicked");
                     hideScreens();
+                    $("#showtimes").css("display", "block");
                 });
                 $('#searchButton').click(function(){
                    console.log("Searching"); 
                     getLocation();
                 });
+                function addMarkers(){
+              var chicago = {lat: 41.8781, lng: -87.6298};
+              var map = new google.maps.Map(document.getElementById('map1'), {zoom: 12, center: chicago}); 
+              db.yelp.each(function(v){
+                  console.log(v.id+" added marker");
+                  var infowindow = new google.maps.InfoWindow({
+                         content:
+                          '<div id="content">'+
+                              '<div id="siteNotice">'+
+                              '</div>'+
+                               '<h1 id="firstHeading" class="firstHeading">' 
+                                +v.name+ 
+                                '</h1>'+
+                                '<div id="bodyContent">'+
+                                '<b>Date Created: '+v.address+'<br>Completion Date:'+v.city+
+                                '</b><br><br><b>Where the Graffiti is located: '+v.state+'</b><br><br><b>What type of surface?: '+v.zipcode+'</b>'+
+                                '<br><br><b>Status: '+v.phone+'</b><br><br><b>Service Request Number: '+v.rating+'</b>'+
+                                '</div>'+
+                          '</div>'
+                  });
+                  
+                  var iconColor="restaurant.png"
+                  var location = {lat: v.lat, lng: v.long};
+                  var marker = new google.maps.Marker({
+                             position: location, 
+                             map: map,
+                             icon: "blue-dot.png"
+                  });
+                  
+                  marker.set("id",v.id);
+                  marker.addListener('click', function() {
+                      var idM=marker.get("id");
+                      console.log("clicked on marker "+idM);
+                      infowindow.open(map, marker);
+                  });
+              });
+              var id=0;
+              db.theatres.each(function(v){
+                  console.log(id+" Movie added marker");
+                  var infowindow = new google.maps.InfoWindow({
+                         content:
+                          '<div id="content">'+
+                              '<div id="siteNotice">'+
+                              '</div>'+
+                               '<h1 id="firstHeading" class="firstHeading">' 
+                                +v.theatre+ 
+                                '</h1>'+
+                          '</div>'
+                  });
+                  var geocoder = new google.maps.Geocoder();
+                   geocoder.geocode({
+                      'address': v.theatre
+                   }, 
+                   function(results, status) {
+                      if(status == google.maps.GeocoderStatus.OK) {
+                         var marker=new google.maps.Marker({
+                            position: results[0].geometry.location,
+                            map: map
+                          });
+                          marker.set("id",id);
+                          marker.addListener('click', function() {
+                              var idM=marker.get("id");
+                              console.log("clicked on marker "+idM);
+                              infowindow.open(map, marker);
+                          });
+                      }
+                       else{
+                           console.log("Cant add marker for "+v.theatre);
+                       }
+                   });
+                  id++;
+              });
+          }
                 function loadCards(){
                 
                     db.yelp.each(function(v){
-                        var clone = $(".demo-card").clone();
+                        var clone = $(".listTemp").clone();
                         clone.find(".demo-card__media").css("background-image","url('"+v.image+"')");
                         clone.find(".mdc-typography--headline6").text(v.name);
                         clone.find(".mdc-typography--subtitle2").text(v.address+","+v.city+","+v.state+","+v.zipcode);
                         clone.find(".mdc-typography--body2").text(v.phone+"   "+v.rating);
                         clone.attr("data-id",v.id);
                         clone.attr("id","FCard");
-                        clone.removeClass("demo-card");
+                        clone.removeClass("listTemp");
                         $("#cardsList").append(clone);
                     });
                                    
                 }
                 function loadMovieCards(){
                     db.movie.each(function(v){
-                        var clone = $(".demo-card").clone();
+                        var clone = $(".listTemp").clone();
                         var str = v.title;
                         var replaced = str.split(' ').join('+');
                         var year = v.releaseDate.substr(0, 4);
@@ -221,15 +318,15 @@
                             var imgeURL="https://image.tmdb.org/t/p/w185"+response.results[0].poster_path;
                             image.src=imgeURL;
                              clone.find(".demo-card__media").css("background-image","url('"+imgeURL+"')");
-                            clone.find(".demo-card__media").css("height",image.height);
-                            clone.find(".demo-card__media").css("width",image.width);
+                            clone.find(".demo-card__media").css("height","278px");
+                            clone.find(".demo-card__media").css("width","185px");
                         });
                         clone.find(".mdc-typography--headline6").text(v.title);
                         clone.find(".mdc-typography--subtitle2").text("Date Released: "+v.releaseDate);
                         clone.find(".mdc-typography--body2").text(v.longDescription);
                         clone.attr("data-id",v.id);
                         clone.attr("id","MCard");
-                        clone.removeClass("demo-card");
+                        clone.removeClass("listTemp");
                         $("#movieList").append(clone);
                     });
                 }
@@ -246,7 +343,9 @@
                     db.showtime.clear();
                     db.theatres.clear();
                     $("#cardsList").empty();
-                     $("#movieList").empty();
+                    $("#movieList").empty();
+                    $("#showTimeForMovie").empty();
+                    
                     var myurl = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude="+lat+"&longitude="+long;
                     $.ajax({
                         url: myurl,
@@ -280,6 +379,7 @@
                                   });
                               });
                               loadCards();
+                              addMarkers();
                               //addMarkers();
                           } else {
                               // If our results are 0; no businesses were returned by the JSON therefor we display on the page no results were found
@@ -329,7 +429,7 @@
                             });
                   });
                     loadMovieCards();
-                     //addMarkers();
+                    addMarkers();
                 } else {
                     // If our results are 0; no businesses were returned by the JSON therefor we display on the page no results were found
                     $('#header').append('<h5>We discovered no results!</h5>');
@@ -346,19 +446,47 @@
         }
                 function hideScreens() {
              console.log("Hiding Screens");
-             $("#map1").css("display", "none");
              $("#search").css("display", "none");
              $("#list").css("display", "none");
              $("#header").css("display", "none");
              $("#about").css("display", "none");
              $("#movies").css("display", "none");
+                    $("#showtimes").css("display", "none");
+                    $("#map1").css("display",  "none");
+                    
              
          }
                 function foodExpand(id){
                     console.log(id);
                 }
                 function movieExpand(id){
+                    $("#showTimeForMovie").empty();
                     console.log(id);
+                    db.movie.get(parseInt(id)).then (function (movie) {
+                     console.log ("Friend with id "+id+": " + movie.title);
+                         var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today =  mm + '-' + dd + '-' + yyyy ;
+                      $("#headerShowtime").text("SHOWTIMES FOR "+movie.title +" ON "+today);
+                     
+                    db.showtime.each(function(v){
+                        if(v.name==movie.title){
+                        var clone = $(".showtime-Temp").clone();
+                        clone.find(".mdc-typography--headline6").text(v.theatre);
+                        clone.find(".mdc-typography--subtitle2").text(v.dateTime);
+                        clone.find(".mdc-typography--body2").text(v.phone+"   "+v.rating);
+                        clone.attr("data-id",v.id);
+                        clone.attr("id","SCard");
+                        clone.removeClass("showtime-Temp");
+                        $("#showTimeForMovie").append(clone);    
+                        }
+                       
+                    });
+                 });
+                    console.log("finished Showtime");
                 }
                 $("body").on("click","#FCard",function(){
              foodExpand($(this).attr("data-id"));
@@ -376,6 +504,6 @@
                    });
         }
         </script>
-        <script async defer src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCdVEsFVj2iW8PweCj3hm8BkBRlz2qbTgM&callback=initMap"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdVEsFVj2iW8PweCj3hm8BkBRlz2qbTgM&callback=initMap"></script>
     </body>
 </html>
