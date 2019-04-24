@@ -11,19 +11,83 @@
         <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>  
         <style>
             #map1 {
-        height: 100%;
+                height: 100%;
                 width:100%;
-      }
+            }
             .listTemp{
                 display:none;
             }
             .showtime-Temp{
                 display:none;
             }
+body {
+  display: flex;
+  height: 100vh;
+}
+
+.mdc-drawer-app-content {
+  flex: auto;
+  overflow: auto;
+  position: relative;
+}
+
+.main-content {
+  overflow: auto;
+  height: 100%;
+}
+
+.app-bar {
+  position: absolute;
+}
+       
         </style>
     </head>
     <body>
-        <div class="mdc-tab-bar" role="tablist" data-mdc-auto-init="MDCTabBar">
+          <aside class="mdc-drawer mdc-drawer--dismissible" id="drawer"  data-mdc-auto-init="MDCDrawer">
+    <div class="mdc-drawer__content">
+      <div class="mdc-list">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page" id="searchTab">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">search</i>
+          <span class="mdc-list-item__text">Search</span>
+        </a>
+        <a class="mdc-list-item" href="#" id="foodTab">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">local_dining</i>
+          <span class="mdc-list-item__text">Resturants</span>
+        </a>
+        <a class="mdc-list-item" href="#" id="movieTab">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">local_movies</i>
+          <span class="mdc-list-item__text">Movies</span>
+        </a>
+        <a class="mdc-list-item" href="#" id="mapsTab">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">map</i>
+          <span class="mdc-list-item__text">Map</span>
+        </a>
+        <a class="mdc-list-item" href="#" id="favsTab">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">slideshow</i>
+          <span class="mdc-list-item__text">Showtimes</span>
+        </a>
+        <a class="mdc-list-item" href="#" id="aboutTab">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">info</i>
+          <span class="mdc-list-item__text">About</span>
+        </a>   
+      </div>
+    </div>
+  </aside>
+
+  <div class="mdc-drawer-app-content">
+    <header class="mdc-top-app-bar app-bar" id="app-bar" data-mdc-auto-init="MDCTopAppBar">
+      <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
+          <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
+        </section>
+      </div>
+    </header>
+
+    <main class="main-content" id="main-content">
+      <div class="mdc-top-app-bar--fixed-adjust">
+        
+<!--         <div class="mdc-tab-bar" role="tablist" data-mdc-auto-init="MDCTabBar">
           <div class="mdc-tab-scroller">
             <div class="mdc-tab-scroller__scroll-area">
               <div class="mdc-tab-scroller__scroll-content">
@@ -69,8 +133,18 @@
                 </button>
                 <button class="mdc-tab " role="tab" aria-selected="false" tabindex="4" id="favsTab">
                   <span class="mdc-tab__content">
-                    <span class="mdc-tab__icon material-icons" aria-hidden="true">favorite</span>
-                    <span class="mdc-tab__text-label">Favorites</span>
+                    <span class="mdc-tab__icon material-icons" aria-hidden="true">slideshow</span>
+                    <span class="mdc-tab__text-label">Showtimes</span>
+                  </span>
+                  <span class="mdc-tab-indicator ">
+                    <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                  </span>
+                  <span class="mdc-tab__ripple"></span>
+                </button>
+                <button class="mdc-tab " role="tab" aria-selected="false" tabindex="4" id="aboutTab">
+                  <span class="mdc-tab__content">
+                    <span class="mdc-tab__icon material-icons" aria-hidden="true">info</span>
+                    <span class="mdc-tab__text-label">About</span>
                   </span>
                   <span class="mdc-tab-indicator ">
                     <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
@@ -80,7 +154,8 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
+
           <!-- Call to Action -->
           <section id="search">
             <div class="container text-center">
@@ -105,7 +180,7 @@
   </section>
         
           <!-- MOVIE -->
-        <section class="content-section bg-primary text-white text-center" id="movies">
+        <section class="content-section bg-primary text-white text-center" id="movies"  style="background-color:powderblue;">
     <div class="container">
       <div class="content-section-heading">
         <h3 class="text-secondary mb-0" style="font-size:50px;">MOVIES</h3>
@@ -155,6 +230,7 @@
         <div id="map1" style="height:500px;"></div>
         <script src="https://unpkg.com/material-components-web@1.0.0/dist/material-components-web.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript" src="/material-components-web-catalog/static/js/main.b623ab78.js"></script>
         <script>
             var lat;
             var long;
@@ -178,8 +254,13 @@
                 });
                 var searchButton=mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-button'));
                 window.mdc.autoInit();
-                const tabBar = document.querySelector('.mdc-tab-bar').MDCTabBar;
-                
+//                 const tabBar = document.querySelector('.mdc-tab-bar').MDCTabBar;
+                const topAppBar = document.getElementById('app-bar').MDCTopAppBar;
+                const drawer= document.getElementById('drawer').MDCDrawer;
+topAppBar.setScrollTarget(document.getElementById('main-content'));
+topAppBar.listen('MDCTopAppBar:nav', () => {
+  drawer.open = !drawer.open;
+});
                 $('#searchTab').click(function() {
                     console.log("search Clicked");
                     $("#map1").empty();
@@ -505,5 +586,8 @@
         }
         </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdVEsFVj2iW8PweCj3hm8BkBRlz2qbTgM&callback=initMap"></script>
+            </div>
+  </main>
+        </div>
     </body>
 </html>
