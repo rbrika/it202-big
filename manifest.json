@@ -5,6 +5,10 @@
         "src": "./popcorn.png",
         "type": "image/png",
         "sizes": "144x144"
+      },{
+        "src": "./popcorn.png",
+        "type": "image/png",
+        "sizes": "192x192"
       }],
   "start_url": "./index.html",
   "scope": "./",
