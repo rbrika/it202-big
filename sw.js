@@ -27,7 +27,6 @@ self.addEventListener('install', e => {
         `./`,
         `./index.html`,
           `./blue-dot.png`,
-          `./manifest.json`,
           `./popcorn.png`,
           
       ])
