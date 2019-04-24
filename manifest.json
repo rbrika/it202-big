@@ -1,8 +1,8 @@
 {
-  "name": "Graffiti Removal App",
-  "short_name": "Food Review App",
+  "name": "Food And Movie App",
+  "short_name": "Food Movie App",
   "icons": [ {
-        "src": "./paintRoller.png",
+        "src": "./popcorn.png",
         "type": "image/png",
         "sizes": "144x144"
       }],

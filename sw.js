@@ -25,11 +25,16 @@ self.addEventListener('install', e => {
     caches.open(cacheName).then(cache => {
       return cache.addAll([
         `./`,
-        `./index.html`
+        `./index.html`,
+          `./blue-dot.png`,
+          `./manifest.json`,
+          `./popcorn.png`,
+          
       ])
       .then(() => self.skipWaiting());
     })
   )
+    console.log('[Service Worker] Install');
 });
 
 // https://stackoverflow.com/questions/41009167/what-is-the-use-of-self-clients-claim
