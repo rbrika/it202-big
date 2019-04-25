@@ -26,9 +26,9 @@ self.addEventListener('install', e => {
       return cache.addAll([
         `./`,
         `./index.html`,
-          `./blue-dot.png`,
-          `./popcorn.png`,
-          `./manifest.json`
+        `./blue-dot.png`,
+        `./popcorn.png`,
+        `./manifest.json`
           
       ])
       .then(() => self.skipWaiting());

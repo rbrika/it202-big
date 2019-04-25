@@ -71,6 +71,47 @@
             .mdc-list-item--selected .mdc-list-item__graphic, .mdc-list-item--activated .mdc-list-item__graphic {
     color:#5DAA95!important;
 }
+            #snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;} 
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;} 
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
         </style>
     </head>
     <body>
@@ -226,8 +267,8 @@
             <div class="demo-card__secondary mdc-typography mdc-typography--body2">
                 Visit ten places on our planet that are undergoing the biggest changes today.</div>
           </div>
-            
-        </div>          
+           
+        </div>         
           
         <!-- SHOWTIME Template -->
         <div id= "" class="showtime-Temp mdc-card demo-card demo-basic-with-header mdc-layout-grid__cell demo-cell" data-id="">
@@ -239,9 +280,14 @@
           
         <!-- Map -->
         <div id="map1" style="height:500px;"></div>
+<div id="snackbar">Some text some message..</div>
         <script src="https://unpkg.com/material-components-web@1.0.0/dist/material-components-web.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script>
+
+            </div>
+  </main>
+        </div>
+                <script>
             var lat;
             var long;
             function initMap(){
@@ -265,6 +311,7 @@
                 });
                 var searchButton=mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-button'));
                 window.mdc.autoInit();
+                
                 const topAppBar = document.getElementById('app-bar').MDCTopAppBar;
                 const drawer= document.getElementById('drawer').MDCDrawer;
 topAppBar.setScrollTarget(document.getElementById('main-content'));
@@ -383,9 +430,16 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
                   id++;
               });
           }
+                function myFunction(msg) {
+  var x = document.getElementById("snackbar");
+  x.className = "show";
+                    x.textContent=msg;
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+}
                 function loadCards(){
                 
                     db.yelp.each(function(v){
+                        console.log(v.name);
                         var clone = $(".listTemp").clone();
                         clone.find(".demo-card__media").css("background-image","url('"+v.image+"')");
                         clone.find(".mdc-typography--headline6").text(v.name);
@@ -395,12 +449,12 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
                         clone.attr("id","FCard");
                         clone.removeClass("listTemp");
                         $("#cardsList").append(clone);
+                    }).then(() => {
+                         myFunction("All Resturants loaded");     
                     });
-                                   
+                             
                 }
-                                $("body").on("click","#favoriteButton",function(){
-             //movieExpand($(this).attr("data-id"));
-             //foodExpand($(this).attr("data-id"));
+          $("body").on("click","#favoriteButton",function(){
              var clone = $(this).closest(".demo-card").clone();
              console.log(clone);
                                     
@@ -435,9 +489,12 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
                         clone.find(".mdc-typography--body2").text(v.longDescription);
                         clone.attr("data-id",v.id);
                         clone.attr("id","MCard");
-                        clone.removeClass("listTemp");
+                        clone.removeClass("movieTemp");
                         $("#movieList").append(clone);
+                    }).then(() => {
+                         myFunction("All Movies loaded");     
                     });
+                        
                 }
                 function getLocation() {
                     if (navigator.geolocation) {
@@ -465,7 +522,6 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
                       contentType: "application/json; charset=utf-8",
                       dataType: 'json',
                       success: function(data){
-                          console.log(data);
                           // Grab the results from the API JSON return
                           var totalresults = data.businesses.length;
                           // If our results are greater than 0, continue
@@ -474,6 +530,7 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
                           // Itirate through the JSON array of 'businesses' which was returned by the API
                               $.each(data.businesses, function(i, item) {
                                 // Store each business's object in a variable
+                                console.log(item.name);
                                   db.yelp.put({
                                       name:item.name,
                                       address:item.location.address1,
@@ -495,6 +552,7 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
                               //addMarkers();
                           } else {
                               // If our results are 0; no businesses were returned by the JSON therefor we display on the page no results were found
+                              console.log("NOT MAKING AJAX");
                           }
                       }
                    }); 
@@ -505,7 +563,7 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
 
             today = yyyy + '-' + mm + '-' + dd;
             
-              var url2='https://data.tmsapi.com/v1.1/movies/showings?startDate='+today+'&lat='+lat+'&lng='+long+'&api_key=cd62umkja4byk4g4y2j5cbsa';
+              var url2='https://data.tmsapi.com/v1.1/movies/showings?startDate='+today+'&lat='+lat+'&lng='+long+'&api_key=jy4njh7ntqmafe5ybp6fja4t';
                        $.ajax({
             url: url2,
             method: 'GET',
@@ -544,7 +602,7 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
                     addMarkers();
                 } else {
                     // If our results are 0; no businesses were returned by the JSON therefor we display on the page no results were found
-                    $('#header').append('<h5>We discovered no results!</h5>');
+                   console.log("NOT MAKING AJAX");
                 }
             }
          }); 
@@ -555,6 +613,7 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
             console.log("Latitude: " + position.coords.latitude + 
               "<br>Longitude: " + position.coords.longitude);
             makeAjax();
+                    console.log("MADE AJAX CALLS");
         }
                 function hideScreens() {
              console.log("Hiding Screens");
@@ -596,41 +655,30 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
                         }
                        
                     });
-                 });
-                    console.log("finished Showtime");
+                 }).then(() => {
+                         myFunction("Movie Showtime Loaded");     
+                    });
+                        
+                    
                 }
-                $("body").on("click","#FCard",function(){
-                    console.log("Button not clikced only the actual card");
-//              var clone = $(this).clone();
-//              console.log(clone);
-//              console.log($(this).attr("data-id"));
-//                     $("#userFavs").append(clone);
-         });
+
                  $("body").on("click","#MCard",function(){
              movieExpand($(this).attr("data-id"));
          });
-                
-//                 $("body").on("click","#favoriteButton",function(){
-//              //movieExpand($(this).attr("data-id"));
-//              //foodExpand($(this).attr("data-id"));
-//              var clone = $(this).clone();
-//              console.log(clone);
-//              console.log($(this).parent().parent());
-//                     $("#userFavs").append(clone);
-//          });
             });
             // register the service worker for offline use
-        if('serviceWorker' in navigator) {
-          navigator.serviceWorker
-                   .register('./sw.js')
-                   .then(function() { 
-                          console.log("Service Worker Registered");   
-                   });
-        }
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(registration) {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, function(err) {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  });
+}  
         </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdVEsFVj2iW8PweCj3hm8BkBRlz2qbTgM&callback=initMap"></script>
-            </div>
-  </main>
-        </div>
     </body>
 </html>
