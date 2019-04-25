@@ -27,6 +27,9 @@
             .showtime-Temp{
                 display:none;
             }
+            .movieTemp{
+                display:none;
+            }
             body {
               display: flex;
               height: 100vh;
@@ -45,9 +48,29 @@
 
 .app-bar {
   position: absolute;
+  background:#9FE0AD;  
 }
+            .mdc-button--outlined{
+                border-color:#5DAA95!important;
+                
+            }
+            .mdc-button {
+                color:#5DAA95!important;
+            }
             html{overflow-x: hidden;}
-       
+            .mdc-drawer .mdc-list-item--activated{
+                color:#5DAA95!important;
+            }
+            
+            .mdc-list-item--selected, .mdc-list-item--activated {
+                color:#9FE0AD!important;
+            }
+            :not(.mdc-list--non-interactive)>:not(.mdc-list-item--disabled).mdc-list-item--activated::before, :not(.mdc-list--non-interactive)>:not(.mdc-list-item--disabled).mdc-list-item--activated::after {
+    background-color:#9FE0AD!important;
+}
+            .mdc-list-item--selected .mdc-list-item__graphic, .mdc-list-item--activated .mdc-list-item__graphic {
+    color:#5DAA95!important;
+}
         </style>
     </head>
     <body>
@@ -70,10 +93,14 @@
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">map</i>
           <span class="mdc-list-item__text">Map</span>
         </a>
-        <a class="mdc-list-item" href="#" id="favsTab">
+        <a class="mdc-list-item" href="#" id="showTab">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">slideshow</i>
           <span class="mdc-list-item__text">Showtimes</span>
         </a>
+        <a class="mdc-list-item" href="#" id="favsTab">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">favorite</i>
+          <span class="mdc-list-item__text">Favorites</span>
+        </a>  
         <a class="mdc-list-item" href="#" id="aboutTab">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">info</i>
           <span class="mdc-list-item__text">About</span>
@@ -87,7 +114,7 @@
       <div class="mdc-top-app-bar__row">
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
           <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
-          <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
+          <span class="mdc-top-app-bar__title">Food and Movie App</span>
         </section>
       </div>
     </header>
@@ -98,14 +125,21 @@
           <!-- Call to Action -->
           <section id="search">
             <div class="container text-center">
-              <h2 class="mb-4">You can search for nearby resutrans and movies by using your current location. Click the button below to make the creach </h2>
-                <form>
+              <h2 class="mb-4" style="text-align: center;">You can search for nearby resutrans and movies by using your current location. Click the button below to make the creach </h2>
+                <form style="text-align:center;">
                   <button id="searchButton"class="mdc-button mdc-button--outlined" type="button">Search</button>
                 </form>
             </div>
           </section>
+          <section id="about">
+            <div class="container text-center">
+              <h2 class="mb-4" style="text-align: center;">ABOUT THIS APP</h2>
+               
+            </div>
+          </section>
           <!-- FOOD -->
-        <section class="content-section bg-primary text-white text-center" id="list">
+        <section class="content-section bg-primary text-white text-center" id="list" 
+                 style="background-color:#F2A7B6;">
     <div class="container">
       <div class="content-section-heading">
         <h3 class="text-secondary mb-0" style="font-size:50px;">RESTURANTS</h3>
@@ -133,7 +167,8 @@
   </section>
         
         <!--SHOWTIMES-->
-        <section class="content-section bg-primary text-white text-center" id="showtimes">
+        <section class="content-section bg-primary text-white text-center" id="showtimes" 
+                 style="background-color:#DDF0FF;">
     <div class="container">
       <div class="showTimes content-section-heading">
         <h3 id="headerShowtime"class="text-secondary mb-0" style="font-size:50px;">SHOWTIMES FOR:</h3>
@@ -141,6 +176,20 @@
       </div>
         <div class="mdc-layout-grid mdc-layout-grid--align-left demo-grid demo-grid--alignment">
             <div id="showTimeForMovie" class="mdc-layout-grid__inner">
+            </div>
+        </div>
+    </div>
+  </section>
+         <!--FAVORITES-->
+        <section class="content-section bg-primary text-white text-center" id="favorites" 
+                 style="background-color:#DDF0FF;">
+    <div class="container">
+      <div class="showTimes content-section-heading">
+        <h3 id="headerShowtime"class="text-secondary mb-0" style="font-size:50px;">FAVORITES:</h3>
+        <p id="show" class="mb-5" style="font-size:42px;"></p>
+      </div>
+        <div class="mdc-layout-grid mdc-layout-grid--align-left demo-grid demo-grid--alignment">
+            <div id="userFavs" class="mdc-layout-grid__inner">
             </div>
         </div>
     </div>
@@ -154,10 +203,32 @@
           </div>
           <div class="mdc-card__primary-action demo-card__primary-action" tabindex="0">
             <div class="mdc-card__media mdc-card__media--16-9 demo-card__media" style="background-image: url(&quot;https://material-components.github.io/material-components-web-catalog/static/media/photos/3x2/2.jpg&quot;);"></div>
-            <div class="demo-card__secondary mdc-typography mdc-typography--body2">Visit ten places on our planet that are undergoing the biggest changes today.</div>
+            <div class="demo-card__secondary mdc-typography mdc-typography--body2">
+                Visit ten places on our planet that are undergoing the biggest changes today.</div>
           </div>
+            <div class="mdc-card__actions">
+                  <div class="mdc-card__action-icons">
+                      <button id="favoriteButton"class="mdc-icon-button mdc-card__action mdc-card__action--icon mdc-ripple-upgraded--unbounded mdc-ripple-upgraded" aria-pressed="false" aria-label="Add to favorites" title="Add to favorites" style="--mdc-ripple-fg-size:28px; --mdc-ripple-fg-scale:1.71429; --mdc-ripple-left:10px; --mdc-ripple-top:10px;">
+                          <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i><i class="material-icons mdc-icon-button__icon">favorite_border</i>
+                      </button>
+                  </div>
+              </div>
         </div>
-        
+
+        <!-- Card Template -->
+        <div id= "" class="movieTemp mdc-card demo-card demo-basic-with-header mdc-layout-grid__cell demo-cell" data-id="">
+          <div class="demo-card__primary">
+            <h2 class="demo-card__title mdc-typography mdc-typography--headline6">Retaurant Name</h2>
+            <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2">Address</h3>
+          </div>
+          <div class="mdc-card__primary-action demo-card__primary-action" tabindex="0">
+            <div class="mdc-card__media mdc-card__media--16-9 demo-card__media" style="background-image: url(&quot;https://material-components.github.io/material-components-web-catalog/static/media/photos/3x2/2.jpg&quot;);"></div>
+            <div class="demo-card__secondary mdc-typography mdc-typography--body2">
+                Visit ten places on our planet that are undergoing the biggest changes today.</div>
+          </div>
+            
+        </div>          
+          
         <!-- SHOWTIME Template -->
         <div id= "" class="showtime-Temp mdc-card demo-card demo-basic-with-header mdc-layout-grid__cell demo-cell" data-id="">
           <div class="demo-card__primary">
@@ -165,6 +236,7 @@
             <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2">Address</h3>
           </div>
         </div>
+          
         <!-- Map -->
         <div id="map1" style="height:500px;"></div>
         <script src="https://unpkg.com/material-components-web@1.0.0/dist/material-components-web.min.js"></script>
@@ -182,10 +254,11 @@
             $("#movies").css("display", "none");
             $("#about").css("display", "none");
             $("#showtimes").css("display", "none");
+            $("#favorites").css("display","none"); 
             $(document).ready(function () { 
                 var db = new Dexie("yelp_database");
                 db.version(1).stores({
-                    yelp: '++id,name,address,city,state,zipcode,phone,rating,reviewcount,image,lat,long',
+                    yelp: '++id,name,address,city,state,zipcode,phone,rating,reviewcount,image,lat,long,reviewCount,price',
                     movie:'++id,title,releaseDate,shortDescription,uriImage',
                     showtime:'++id,title,theatre,dateTime',
                     theatres:'theatre'
@@ -219,10 +292,19 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
                     hideScreens();
                     $("#map1").css("display", "block");
                 });
-                $('#favsTab').click(function() {
+                $('#showTab').click(function() {
                     console.log("favs Clicked");
                     hideScreens();
                     $("#showtimes").css("display", "block");
+                });
+                $('#favsTab').click(function(){
+                    hideScreens();
+                   $("#favorites").css("display","block"); 
+                });
+                $('#aboutTab').click(function() {
+                    console.log("favs Clicked");
+                    hideScreens();
+                    $("#about").css("display", "block");
                 });
                 $('#searchButton').click(function(){
                    console.log("Searching"); 
@@ -316,9 +398,18 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
                     });
                                    
                 }
+                                $("body").on("click","#favoriteButton",function(){
+             //movieExpand($(this).attr("data-id"));
+             //foodExpand($(this).attr("data-id"));
+             var clone = $(this).closest(".demo-card").clone();
+             console.log(clone);
+                                    
+             console.log($(this).closest(".demo-card").attr("data-id"));
+                    $("#userFavs").append(clone);
+         });
                 function loadMovieCards(){
                     db.movie.each(function(v){
-                        var clone = $(".listTemp").clone();
+                        var clone = $(".movieTemp").clone();
                         var str = v.title;
                         var replaced = str.split(' ').join('+');
                         var year = v.releaseDate.substr(0, 4);
@@ -374,6 +465,7 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
                       contentType: "application/json; charset=utf-8",
                       dataType: 'json',
                       success: function(data){
+                          console.log(data);
                           // Grab the results from the API JSON return
                           var totalresults = data.businesses.length;
                           // If our results are greater than 0, continue
@@ -393,7 +485,9 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
                                       reviewcount:item.review_count,
                                       image:item.image_url,
                                       lat:item.coordinates.latitude,
-                                      long:item.coordinates.longitude
+                                      long:item.coordinates.longitude,
+                                      reviewCount:item.review_count,
+                                      price:item.price
                                   });
                               });
                               loadCards();
@@ -469,10 +563,9 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
              $("#header").css("display", "none");
              $("#about").css("display", "none");
              $("#movies").css("display", "none");
-                    $("#showtimes").css("display", "none");
-                    $("#map1").css("display",  "none");
-                    
-             
+             $("#showtimes").css("display", "none");
+             $("#map1").css("display",  "none");
+                    $("#favorites").css("display","none"); 
          }
                 function foodExpand(id){
                     console.log(id);
@@ -507,11 +600,24 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
                     console.log("finished Showtime");
                 }
                 $("body").on("click","#FCard",function(){
-             foodExpand($(this).attr("data-id"));
+                    console.log("Button not clikced only the actual card");
+//              var clone = $(this).clone();
+//              console.log(clone);
+//              console.log($(this).attr("data-id"));
+//                     $("#userFavs").append(clone);
          });
                  $("body").on("click","#MCard",function(){
              movieExpand($(this).attr("data-id"));
          });
+                
+//                 $("body").on("click","#favoriteButton",function(){
+//              //movieExpand($(this).attr("data-id"));
+//              //foodExpand($(this).attr("data-id"));
+//              var clone = $(this).clone();
+//              console.log(clone);
+//              console.log($(this).parent().parent());
+//                     $("#userFavs").append(clone);
+//          });
             });
             // register the service worker for offline use
         if('serviceWorker' in navigator) {
