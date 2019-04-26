@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-<link rel="shortcut icon" href="#" />
+        <link rel="shortcut icon" href="#" />
         <meta name="theme-color" content="#317EFB"/>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,12 +10,13 @@
         <title>Food And Movie</title>
         <link rel="manifest" href="./manifest.json">
         <script async   src="https://cdn.jsdelivr.net/npm/pwacompat@2.0.6/pwacompat.min.js"
-    integrity="sha384-GOaSLecPIMCJksN83HLuYf9FToOiQ2Df0+0ntv7ey8zjUHESXhthwvq9hXAZTifA"
-    crossorigin="anonymous"></script>
+        integrity="sha384-GOaSLecPIMCJksN83HLuYf9FToOiQ2Df0+0ntv7ey8zjUHESXhthwvq9hXAZTifA"
+        crossorigin="anonymous"></script>
         <link href="https://unpkg.com/material-components-web@0.40.0/dist/material-components-web.min.css" rel="stylesheet">
-        <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+        <script src="https://unpkg.com/material-components-web@0.40.0/dist/material-components-web.min.js"></script>
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>  
+
         <style>
             #map1 {
                 height: 100%;
@@ -31,15 +32,15 @@
                 display:none;
             }
             body {
-              display: flex;
-              height: 100vh;
+                display: flex;
+                height: 100vh;
             }
 
-.mdc-drawer-app-content {
-  flex: auto;
-  overflow: auto;
-  position: relative;
-}
+            .mdc-drawer-app-content {
+                flex: auto;
+                overflow: auto;
+                position: relative;
+            }
 
 .main-content {
   overflow: auto;
@@ -124,7 +125,7 @@
         </a>
         <a class="mdc-list-item" href="#" id="foodTab">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">local_dining</i>
-          <span class="mdc-list-item__text">Resturants</span>
+          <span class="mdc-list-item__text">Restaurants</span>
         </a>
         <a class="mdc-list-item" href="#" id="movieTab">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">local_movies</i>
@@ -166,7 +167,7 @@
           <!-- Call to Action -->
           <section id="search">
             <div class="container text-center">
-              <h2 class="mb-4" style="text-align: center;">You can search for nearby resutrans and movies by using your current location. Click the button below to make the creach </h2>
+              <h2 class="mb-4" style="text-align: center;">You can search for nearby Restaurants and Movies by using your current location. Click the button below to make the search </h2>
                 <form style="text-align:center;">
                   <button id="searchButton"class="mdc-button mdc-button--outlined" type="button">Search</button>
                 </form>
@@ -175,7 +176,8 @@
           <section id="about">
             <div class="container text-center">
               <h2 class="mb-4" style="text-align: center;">ABOUT THIS APP</h2>
-               
+              <h3 class="mb-4" style="text-align: center;">By: Rime Brika</h3>
+              <h4 class="mb-4" style="text-align: center;">Uses your current location to get the nearest resturants and movies that are playing near you!</h4>
             </div>
           </section>
           <!-- FOOD -->
@@ -183,7 +185,7 @@
                  style="background-color:#F2A7B6;">
     <div class="container">
       <div class="content-section-heading">
-        <h3 class="text-secondary mb-0" style="font-size:50px;">RESTURANTS</h3>
+        <h3 class="text-secondary mb-0" style="font-size:50px;">Restaurants</h3>
         <p id="show" class="mb-5" style="font-size:42px;"></p>
       </div>
         <div class="mdc-layout-grid mdc-layout-grid--align-left demo-grid demo-grid--alignment">
@@ -197,7 +199,7 @@
         <section class="content-section bg-primary text-white text-center" id="movies"  style="background-color:powderblue;">
     <div class="container">
       <div class="content-section-heading">
-        <h3 class="text-secondary mb-0" style="font-size:50px;">MOVIES</h3>
+        <h3 class="text-secondary mb-0" style="font-size:50px;">Movies</h3>
         <p id="show" class="mb-5" style="font-size:42px;"></p>
       </div>
         <div class="mdc-layout-grid mdc-layout-grid--align-left demo-grid demo-grid--alignment">
@@ -212,7 +214,7 @@
                  style="background-color:#DDF0FF;">
     <div class="container">
       <div class="showTimes content-section-heading">
-        <h3 id="headerShowtime"class="text-secondary mb-0" style="font-size:50px;">SHOWTIMES FOR:</h3>
+        <h3 id="headerShowtime"class="text-secondary mb-0" style="font-size:50px;">Showtimes For:</h3>
         <p id="show" class="mb-5" style="font-size:42px;"></p>
       </div>
         <div class="mdc-layout-grid mdc-layout-grid--align-left demo-grid demo-grid--alignment">
@@ -226,7 +228,7 @@
                  style="background-color:#DDF0FF;">
     <div class="container">
       <div class="showTimes content-section-heading">
-        <h3 id="headerShowtime"class="text-secondary mb-0" style="font-size:50px;">FAVORITES:</h3>
+        <h3 id="headerShowtime"class="text-secondary mb-0" style="font-size:50px;">Favorites:</h3>
         <p id="show" class="mb-5" style="font-size:42px;"></p>
       </div>
         <div class="mdc-layout-grid mdc-layout-grid--align-left demo-grid demo-grid--alignment">
@@ -239,7 +241,7 @@
         <!-- Card Template -->
         <div id= "" class="listTemp mdc-card demo-card demo-basic-with-header mdc-layout-grid__cell demo-cell" data-id="">
           <div class="demo-card__primary">
-            <h2 class="demo-card__title mdc-typography mdc-typography--headline6">Retaurant Name</h2>
+            <h2 class="demo-card__title mdc-typography mdc-typography--headline6">Restaurants Name</h2>
             <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2">Address</h3>
           </div>
           <div class="mdc-card__primary-action demo-card__primary-action" tabindex="0">
@@ -259,7 +261,7 @@
         <!-- Card Template -->
         <div id= "" class="movieTemp mdc-card demo-card demo-basic-with-header mdc-layout-grid__cell demo-cell" data-id="">
           <div class="demo-card__primary">
-            <h2 class="demo-card__title mdc-typography mdc-typography--headline6">Retaurant Name</h2>
+            <h2 class="demo-card__title mdc-typography mdc-typography--headline6">Restaurants Name</h2>
             <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2">Address</h3>
           </div>
           <div class="mdc-card__primary-action demo-card__primary-action" tabindex="0">
@@ -273,14 +275,14 @@
         <!-- SHOWTIME Template -->
         <div id= "" class="showtime-Temp mdc-card demo-card demo-basic-with-header mdc-layout-grid__cell demo-cell" data-id="">
           <div class="demo-card__primary">
-            <h2 class="demo-card__title mdc-typography mdc-typography--headline6">Retaurant Name</h2>
+            <h2 class="demo-card__title mdc-typography mdc-typography--headline6">Restaurants Name</h2>
             <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2">Address</h3>
           </div>
         </div>
           
         <!-- Map -->
         <div id="map1" style="height:500px;"></div>
-<div id="snackbar">Some text some message..</div>
+        <div id="snackbar">Some text some message..</div>
         <script src="https://unpkg.com/material-components-web@1.0.0/dist/material-components-web.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
