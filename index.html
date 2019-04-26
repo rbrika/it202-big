@@ -452,7 +452,7 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
                         clone.removeClass("listTemp");
                         $("#cardsList").append(clone);
                     }).then(() => {
-                         myFunction("All Resturants loaded");     
+                         myFunction("All Restaurants loaded");     
                     });
                              
                 }
@@ -502,7 +502,8 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(showPosition);
                     }else { 
-                        console.log("Geolocation is not supported by this browser.");
+                        myFunction("Geolocation is not supported by this browser."); 
+                        //console.log("Geolocation is not supported by this browser.");
                     }
                 }
                 function makeAjax(){
