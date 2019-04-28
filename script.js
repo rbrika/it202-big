@@ -32,35 +32,42 @@ $(document).ready(function () {
         $("#map1").empty();
         hideScreens();
         $("#search").css("display", "block");
+        drawer.open = !drawer.open;
     });
     $('#foodTab').click(function() {
         console.log("food Clicked");
         hideScreens();
         $("#list").css("display", "block");
+        drawer.open = !drawer.open;
     });
     $('#movieTab').click(function() {
         console.log("movie Clicked");
         hideScreens();
         $("#movies").css("display", "block");
+        drawer.open = !drawer.open;
     });
     $('#mapsTab').click(function() {
         console.log("map Clicked");
         hideScreens();
         $("#map1").css("display", "block");
+        drawer.open = !drawer.open;
     });
     $('#showTab').click(function() {
         console.log("favs Clicked");
         hideScreens();
         $("#showtimes").css("display", "block");
+        drawer.open = !drawer.open;
     });
     $('#favsTab').click(function(){
         hideScreens();
-        $("#favorites").css("display","block"); 
+        $("#favorites").css("display","block");
+        drawer.open = !drawer.open;
     });
     $('#aboutTab').click(function() {
         console.log("favs Clicked");
         hideScreens();
         $("#about").css("display", "block");
+        drawer.open = !drawer.open;
     });
     $('#searchButton').click(function(){
         console.log("Searching"); 
@@ -76,11 +83,11 @@ $(document).ready(function () {
                 '<div id="content">'+'<div id="siteNotice">'+
                 '</div>'+'<h1 id="firstHeading" class="firstHeading">' 
                 +v.name+'</h1>'+'<div id="bodyContent">'+
-                '<b>Address: '+v.address+'<br>Completion Date:'+v.city+
-                '</b><br><br><b>Where the Graffiti is located: '+v.state+
-                '</b><br><br><b>What type of surface?: '+v.zipcode+'</b>'+
-                '<br><br><b>Status: '+v.phone+'</b><br><br><b>Rating: '
-                +v.rating+'</b>'+'</div>'+'</div>'
+                '<b>Address: '+v.address+', '+v.city+
+                ', '+v.state+
+                ', '+v.zipcode+'</b>'+
+                '<br><br><b>Phone: '+v.phone+'</b><br><br><b>Rating: '
+                +v.rating+'/5 stars </b>'+'</div>'+'</div>'
             });
             var iconColor="restaurant.png"
             var location = {lat: v.lat, lng: v.long};
@@ -141,7 +148,7 @@ $(document).ready(function () {
             clone.find(".demo-card__media").css("background-image","url('"+v.image+"')");
             clone.find(".mdc-typography--headline6").text(v.name);
             clone.find(".mdc-typography--subtitle2").text(v.address+","+v.city+","+v.state+","+v.zipcode);
-            clone.find(".mdc-typography--body2").text(v.phone+"   "+v.rating);
+            clone.find(".mdc-typography--body2").text(v.phone+"   "+v.rating+"/5 Stars");
             clone.attr("data-id",v.id);
             clone.attr("id","FCard");
             clone.removeClass("listTemp");
@@ -153,6 +160,7 @@ $(document).ready(function () {
     $("body").on("click","#favoriteButton",function(){
         var clone = $(this).closest(".demo-card").clone();
         $("#userFavs").append(clone);
+        myFunction("Added to Favorites"); 
     });
     function loadMovieCards(){
         db.movie.each(function(v){
@@ -160,7 +168,9 @@ $(document).ready(function () {
             var str = v.title;
             var replaced = str.split(' ').join('+');
             var year = v.releaseDate.substr(0, 4);
-            var url="https://api.themoviedb.org/3/search/movie?api_key=642b28a1e9be5b14f4a4394716c62c97&language=en-US&query="+replaced+"&page=1&include_adult=false&year="+year;
+            var url="https://api.themoviedb.org/3/search/movie?"+
+                "api_key=642b28a1e9be5b14f4a4394716c62c97&language=en-US&query="
+                +replaced+"&page=1&include_adult=false&year="+year;
             var settings = {
                 "async": true,
                 "crossDomain": true,
@@ -300,8 +310,9 @@ $(document).ready(function () {
     function showPosition(position) {
         lat=position.coords.latitude;
         long=position.coords.longitude;
-        
-        $("#location").text(lat+"  "+long);
+        var chicago = {lat: lat, lng: long};
+        var map = new google.maps.Map(document.getElementById('map1'), {zoom: 12, center: chicago});
+        //$("#location").text(lat+"  "+long);
         console.log("Latitude: " + position.coords.latitude + 
               "<br>Longitude: " + position.coords.longitude);
         makeAjax();
@@ -328,12 +339,13 @@ $(document).ready(function () {
             var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
             var yyyy = today.getFullYear();
             today =  mm + '-' + dd + '-' + yyyy ;
-            $("#headerShowtime").text("SHOWTIMES FOR "+movie.title +" ON "+today);
+            $("#headerShowtime").text("Showtimes For: "+movie.title +" on "+today);
             db.showtime.each(function(v){
                 if(v.name==movie.title){
                     var clone = $(".showtime-Temp").clone();
+                    var time = v.dateTime.split("T")[1]; 
                     clone.find(".mdc-typography--headline6").text(v.theatre);
-                    clone.find(".mdc-typography--subtitle2").text(v.dateTime);
+                    clone.find(".mdc-typography--subtitle2").text(time);
                     clone.find(".mdc-typography--body2").text(v.phone+"   "+v.rating);
                     clone.attr("data-id",v.id);
                     clone.attr("id","SCard");

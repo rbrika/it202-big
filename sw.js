@@ -29,8 +29,8 @@ self.addEventListener('install', e => {
         `./blue-dot.png`,
         `./popcorn.png`,
         `./manifest.json`,
-          `./script.js`,
-          `./style.css`
+        `./script.js`,
+        `./style.css`
           
       ])
       .then(() => self.skipWaiting());

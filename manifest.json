@@ -1,6 +1,6 @@
 {
-  "name": "Food And Movie App",
-  "short_name": "Food Movie App",
+  "name": "It's Showtime",
+  "short_name": "It's Showtime",
   "icons": [ {
         "src": "./popcorn.png",
         "type": "image/png",

@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="Food and Movie">
         <meta name="author" content="">
-        <title>Food And Movie</title>
+        <title>It's Showtime</title>
         <link rel="manifest" href="./manifest.json">
         <script async src="https://cdn.jsdelivr.net/npm/pwacompat@2.0.6/pwacompat.min.js"
         integrity="sha384-GOaSLecPIMCJksN83HLuYf9FToOiQ2Df0+0ntv7ey8zjUHESXhthwvq9hXAZTifA"
@@ -59,7 +59,7 @@
                 <div class="mdc-top-app-bar__row">
                     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                         <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
-                        <span class="mdc-top-app-bar__title">Food and Movie App</span>
+                        <span class="mdc-top-app-bar__title">It's Showtime</span>
                     </section>
                 </div>
             </header>
@@ -70,8 +70,14 @@
                     <!-- SEARCH SCREEN -->
                     <section id="search">
                         <div class="container text-center">
-                            <h2 class="mb-4" style="text-align: center;">
-                                You can search for nearby Restaurants and Movies by using your current location. Click the button below to make the search 
+                            <h1 class="mb-4" style="text-align: center;font-family: Arial, Helvetica, sans-serif;">
+                                Welcome to It's Showtime!!
+                            </h1>
+                            <h2 class="mb-4" style="text-align: center;font-family: Arial, Helvetica, sans-serif;">
+                                For more information on what the app does, go to the About Page.
+                            </h2>
+                            <h2 class="mb-4" style="text-align: center;font-family: Arial, Helvetica, sans-serif;">
+                                You can search for nearby Restaurants and Movies by using your current location!! Click the button below to make the search !!
                             </h2>
                             <h3 id="location"></h3>
                             <form style="text-align:center;">
@@ -80,18 +86,23 @@
                         </div>
                     </section>
                     <!-- ABOUT SCREEN -->
-                    <section id="about">
+                    <section id="about" style="display: none;">
                         <div class="container text-center">
                             <h2 class="mb-4" style="text-align: center;">ABOUT THIS APP</h2>
                             <h3 class="mb-4" style="text-align: center;">By: Rime Brika</h3>
                             <h4 class="mb-4" style="text-align: center;">
-                                Uses your current location to get the nearest resturants and movies that are playing near you!
+                                Uses your current location to get the nearest resturants and movies that are playing near you!<br><br>
+                                Once you make a search, a notification will pop up on the bottom of the screen when the Restaurants are loaded.<br><br>
+                                In order to see the Resutaruts and movie, use the menu button to go to the pages.<br><br>
+                                You can favorite a resutrant and it will show up in your Favorites Screen.<br><br>
+                                When you click on a movie, its showtimes will be listed in the Showtimes Screen.<br><br>
+                                The Map screen will display the the restuants and movies near you as markers, red for Movies and blue for Resturants.
                             </h4>
                         </div>
                     </section>
                     <!-- RESTAURANT SCREEN -->
                     <section class="content-section bg-primary text-white text-center" id="list" 
-                             style="background-color:#F2A7B6;">
+                             style="background-color:#F2A7B6;display: none;">
                         <div class="container">
                             <div class="content-section-heading">
                                 <h3 class="text-secondary mb-0" style="font-size:50px;">Restaurants</h3>
@@ -105,7 +116,7 @@
         
                     <!-- MOVIE SCREEN -->
                     <section class="content-section bg-primary text-white text-center" id="movies"
-                             style="background-color:powderblue;">
+                             style="background-color:powderblue;display: none;">
                         <div class="container">
                             <div class="content-section-heading">
                                 <h3 class="text-secondary mb-0" style="font-size:50px;">Movies</h3>
@@ -120,7 +131,7 @@
         
                     <!-- SHOWTIMES SCREEN -->
                     <section class="content-section bg-primary text-white text-center" id="showtimes" 
-                     style="background-color:#DDF0FF;">
+                     style="background-color:#DDF0FF;display: none;">
                         <div class="container">
                             <div class="showTimes content-section-heading">
                                 <h3 id="headerShowtime"class="text-secondary mb-0" style="font-size:50px;">Showtimes For:</h3>
@@ -134,7 +145,7 @@
                     
                     <!--FAVORITES-->
                     <section class="content-section bg-primary text-white text-center" id="favorites" 
-                     style="background-color:#DDF0FF;">
+                     style="background-color:#DDF0FF;display: none;">
                         <div class="container">
                             <div class="showTimes content-section-heading">
                                 <h3 id="headerShowtime"class="text-secondary mb-0" style="font-size:50px;">Favorites:</h3>
